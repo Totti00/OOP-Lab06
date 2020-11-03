@@ -1,11 +1,30 @@
 package it.unibo.oop.lab.collections1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 /**
  * Example class using {@link java.util.List} and {@link java.util.Map}.
  * 
  */
 public final class UseCollection {
-
+	
+	
+	
+	private static final int START = 1000;
+	private static final int STOP = 2000;
+	
+	private static final int TEMPO = 100_000;
+	
+	private static final long AFRICA_POPULATION = 1_110_635_000;
+	private static final long AMERICAS_POPULATION = 972_005_000;
+	private static final long ANTARCTICA_POPULATION = 0;
+	private static final long ASIA_POPULATION = 4_298_723_000l;
+	private static final long EUROPE_POPULATION = 742_452_000;
+	private static final long OCEANIA_POPULATION = 38_304_000;
+	
     private UseCollection() {
     }
 
@@ -63,5 +82,43 @@ public final class UseCollection {
         /*
          * 8) Compute the population of the world
          */
+    	
+    	final ArrayList<Integer> l1 = new ArrayList<Integer>();
+    	for (int i = START; i < STOP; i++) {
+    		l1.add(i);
+    	}
+    	
+    	final LinkedList<Integer> ll1 = new LinkedList<Integer>(l1);
+    	
+    	final var c = l1.get(l1.size()-l1.size());
+    	l1.set(l1.size()-l1.size(), l1.get(l1.size()-1));
+    	l1.set(l1.size()-1, c);
+    	
+    	for(final var h: l1) {
+    		System.out.println(h + ", ");
+    	}
+    	
+    	long time = System.nanoTime();
+    	
+    	for(int i = 0; i < TEMPO; i++) {
+    		l1.add(i,i);
+    		ll1.add(i,i);
+    	}
+    	
+    	time = System.nanoTime() - time;
+    	
+    	final Map<String, Long> map = new HashMap<>();
+    	map.put("Africa", AFRICA_POPULATION);
+    	map.put("Americas", AMERICAS_POPULATION);
+    	map.put("Antarctica", ANTARCTICA_POPULATION);
+    	map.put("Asia", ASIA_POPULATION);
+    	map.put("Europe", EUROPE_POPULATION);
+    	map.put("Oceania", OCEANIA_POPULATION);
+    	
+    	long total_abitant = 0;
+    	for (final Long v: map.values()) {
+    		total_abitant = total_abitant + v;
+    	}
+    	System.out.println("Gli abitanti totali sono: " + total_abitant);
     }
 }
