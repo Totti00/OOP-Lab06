@@ -22,8 +22,8 @@ public class TestStrictBankAccount {
     @Test
     public void testBankOperations() {
     	
-    	final AccountHolder h1 = new AccountHolder("Mario", "Rossi", 01);
-    	final AccountHolder h2 = new AccountHolder("Giacomo", "Totaro", 02);
+    	final AccountHolder h1 = new AccountHolder("Mario", "Rossi", 1);
+    	final AccountHolder h2 = new AccountHolder("Giacomo", "Totaro", 2);
     	final StrictBankAccount account1 = new StrictBankAccount(h1.getUserID(), AMOUNT_INITIAL, TRANSACTION_INITIAL);
     	final StrictBankAccount account2 = new StrictBankAccount(h2.getUserID(), AMOUNT_INITIAL, TRANSACTION_INITIAL);
     	
