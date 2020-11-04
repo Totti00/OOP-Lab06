@@ -1,7 +1,13 @@
 package it.unibo.oop.lab.collections2;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -18,6 +24,7 @@ import java.util.List;
  */
 public class SocialNetworkUserImpl<U extends User> extends UserImpl implements SocialNetworkUser<U> {
 
+	private final Map<String, Set<U>> friends;
     /*
      * 
      * [FIELDS]
@@ -56,6 +63,12 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      */
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
+        this.friends = new HashMap<>();
+    }
+    
+    public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+		super(name, surname, user, -1);
+		this.friends = new HashMap<>();
     }
 
     /*
@@ -64,19 +77,29 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * Implements the methods below
      */
 
-    @Override
     public boolean addFollowedUser(final String circle, final U user) {
-        return false;
+    	Set<U> circleFriends = this.friends.get(circle);
+    	if(circleFriends == null) {
+    		circleFriends = new HashSet<>();
+    		this.friends.put(circle, circleFriends);
+    	}
+        return circleFriends.add(user);
     }
-
-    @Override
+    
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+        final Collection<U> userInFriend = this.friends.get(groupName);
+        if (userInFriend != null) {
+        	return new ArrayList<>(userInFriend);
+        }
+;    	return Collections.emptyList();
     }
 
-    @Override
     public List<U> getFollowedUsers() {
-        return null;
+    	final Set<U> followedFriend = new HashSet<>();
+    	for(final Set<U> group: friends.values()) {
+    		followedFriend.addAll(group);
+    	}
+        return new ArrayList<>(followedFriend);
     }
 
 }
