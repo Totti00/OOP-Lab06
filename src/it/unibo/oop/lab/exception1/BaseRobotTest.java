@@ -58,7 +58,7 @@ public final class BaseRobotTest {
         		r1.moveUp();
             }
             // reached the upper limit of the world
-        	r1.moveUp();
+        	r1.moveUp() ;
         } catch(PositionOutOfBoundException e) {
         	assertTrue(e.getMessage().contains("pos(" + WORLD_X_UPPER_LIMIT + ", " + (WORLD_Y_UPPER_LIMIT + 1) + ", 0)"));
         } catch(NotEnoughBatteryException e) {
