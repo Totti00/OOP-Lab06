@@ -46,12 +46,13 @@ public final class BaseRobotTest {
             /*
              * 2) Move to the top until it reaches the upper right conrner of the world
              */
-            fail("I should not get sych far!");
+            fail("Non va bene se sono arrivato qui");
         } catch(PositionOutOfBoundException e) {
         	assertTrue(e.getMessage().contains("pos(" + (WORLD_X_UPPER_LIMIT + 1) + ", 0)"));
         } catch(NotEnoughBatteryException e) {
-        	fail("No battery problems expected here");
+        	fail("Nessun problema di batteria qua");
         }
+        
         try {
         	for (int i = 0; i < WORLD_Y_UPPER_LIMIT; i++) {
                 // check if position if coherent
@@ -60,9 +61,9 @@ public final class BaseRobotTest {
             // reached the upper limit of the world
         	r1.moveUp() ;
         } catch(PositionOutOfBoundException e) {
-        	assertTrue(e.getMessage().contains("pos(" + WORLD_X_UPPER_LIMIT + ", " + (WORLD_Y_UPPER_LIMIT + 1) + ", 0)"));
+        	assertTrue(e.getMessage().contains("pos(" + WORLD_X_UPPER_LIMIT + ", " + (WORLD_Y_UPPER_LIMIT + 1) + ")"));
         } catch(NotEnoughBatteryException e) {
-        	fail("Battery should not be the issue here! ");
+        	fail("Qua non dovrei arrivare perchè la batteria non è il problema");
         }
     }
 
@@ -73,22 +74,27 @@ public final class BaseRobotTest {
     @Test
     public void testRobotBatteryBase() {
         final Robot r2 = new Robot("SimpleRobot2", 20);
-        /*
-         * Repeatedly move the robot up and down until the battery is completely
-         * exhausted.
-         */
-        try {
-        	 while (r2.getBatteryLevel() > 0) {
-                 r2.moveUp();
-                 r2.moveDown();
-             }
-        	 r2.moveDown();
-        	 fail("You're not supposed to get that far with no battery! ");
-        } catch(PositionOutOfBoundException e) {
-        	fail("I expected battery to fail! ");
-        } catch(NotEnoughBatteryException e) {
-        	assertTrue(e.getMessage().contains("Battery level is " + r2.getBatteryLevel()));
+
+        while (r2.getBatteryLevel() > 0) {
+        	try {
+	            r2.moveUp();
+	            r2.moveDown();
+	            //Assert.fail();
+        	} catch (NotEnoughBatteryException e) {
+        		System.out.println(e);
+        	}
         }
-       
+        
+        assertEquals(0d, r2.getBatteryLevel(), 0);
+        assertEquals("[CHECKING ROBOT INIT POS Y]", 0, r2.getEnvironment().getCurrPosY());
+        
+        try {
+        	r2.moveUp();
+        } catch (NotEnoughBatteryException e) {
+        	System.out.println(e);
+        }
+        r2.recharge();
+
+        assertEquals(100, r2.getBatteryLevel(), 0);
     }
 }

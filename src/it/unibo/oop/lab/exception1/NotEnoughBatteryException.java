@@ -13,7 +13,8 @@ public class NotEnoughBatteryException extends IllegalStateException {
 	}
 
 	public String toString() {
-		return "NotEnoughBatteryException [batterylevel=" + batterylevel + ", batteryrequired=" + batteryrequired + "]";
+		return "Non hai batteria per muovert. Il livello della batteria è = " + batterylevel
+				+ ", e la batteria richiesta è: " + batteryrequired + "]";
 	}
 	
 	public String getMessage() {
