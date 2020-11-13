@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class SocialNetworkUserImpl<U extends User> extends UserImpl implements SocialNetworkUser<U> {
 
-	private final Map<String, Set<U>> friends;
+	public Map<String, Set<U>> amico;
     /*
      * 
      * [FIELDS]
@@ -48,6 +48,11 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * 2) Define a further constructor where age is defaulted to -1
      */
 
+	public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+        super(name, surname, user, -1);
+        this.amico = new HashMap<>();
+    }	
+	
     /**
      * Builds a new {@link SocialNetworkUserImpl}.
      * 
@@ -63,12 +68,7 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      */
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
-        this.friends = new HashMap<>();
-    }
-    
-    public SocialNetworkUserImpl(final String name, final String surname, final String user) {
-		super(name, surname, user, -1);
-		this.friends = new HashMap<>();
+        this.amico = new HashMap<>();
     }
 
     /*
@@ -78,28 +78,30 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      */
 
     public boolean addFollowedUser(final String circle, final U user) {
-    	Set<U> circleFriends = this.friends.get(circle);
-    	if(circleFriends == null) {
-    		circleFriends = new HashSet<>();
-    		this.friends.put(circle, circleFriends);
-    	}
-        return circleFriends.add(user);
-    }
-    
-    public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        final Collection<U> userInFriend = this.friends.get(groupName);
-        if (userInFriend != null) {
-        	return new ArrayList<>(userInFriend);
+        Set<U> cerchioAmici = this.amico.get(circle);
+        if(cerchioAmici == null) {
+        	cerchioAmici = new HashSet<>();
+        	this.amico.put(circle, cerchioAmici);
         }
-;    	return Collections.emptyList();
+    	return cerchioAmici.add(user);
+    }
+
+    public Collection<U> getFollowedUsersInGroup(final String groupName) {
+    	Collection<U> follower = new HashSet<>();
+    	follower = amico.get(groupName);
+    	
+    	if (follower != null) {
+    		return new ArrayList<>(follower);
+    	}
+    	return Collections.emptyList();
     }
 
     public List<U> getFollowedUsers() {
-    	final Set<U> followedFriend = new HashSet<>();
-    	for(final Set<U> group: friends.values()) {
-    		followedFriend.addAll(group);
+    	Set<U> gruppoAmici = new HashSet<>();
+    	for(final Set<U> gruppo: amico.values()) {
+    		gruppoAmici.addAll(gruppo);
     	}
-        return new ArrayList<>(followedFriend);
+        return new ArrayList<>(gruppoAmici);
     }
 
 }
