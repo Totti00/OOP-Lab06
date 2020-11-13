@@ -43,8 +43,13 @@ public class GraphImpl<N> implements Graph<N>{
 	}
 	
 	private List<N> controllo (N source, N target, Set<N> controllati) {
+		
 		if(source == null && target == null) {
 			return new ArrayList<>();
+		}
+		
+		if(source.equals(target)) {
+			return new ArrayList<>(List.of(target));
 		}
 		
 		if(map.get(source).contains(target)) {
